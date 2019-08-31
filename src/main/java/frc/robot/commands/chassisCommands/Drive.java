@@ -1,31 +1,27 @@
 package frc.robot.commands.chassisCommands;
 
-import frc.robot.commands.TBCommand;
+import frc.robot.commands.Command;
 import frc.robot.subsystems.Chassis;
 
-public class Drive extends TBCommand {
+public class Drive extends Command {
+    private double left;
+    private double right;
 
-    public Drive() {
-        super(new Chassis());
-	}
 
-    @Override
-    protected void initialize() {
-        super.initialize();
+    public Drive(double left, double right) {
+        super(Chassis.getInstance());
+        this.left = left;
+        this.right = right;
     }
 
     @Override
     protected void execute() {
-        super.execute();
+        Chassis.getInstance().drive(left, right);
     }
 
-    @Override
-    protected boolean isFinished() {
-        return super.isFinished();
-    }
 
     @Override
     protected void end() {
-        super.end();
+        Chassis.getInstance().stopMotors();
     }
 }
