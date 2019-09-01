@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystem;
+import frc.robot.arm.commands.HoldPosition;
 import frc.robot.utils.Utils;
 
 import static frc.robot.RobotMap.*;
@@ -54,6 +55,11 @@ public class Arm extends Subsystem {
         int getAngle(){
             return angle;
         }
+    }
+
+    public void holdPosition(){
+        armMasterMotor.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, calculateFF());
+
     }
 
     public ArmState getState() {
@@ -138,6 +144,6 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
+        (new HoldPosition()).start();
     }
 }

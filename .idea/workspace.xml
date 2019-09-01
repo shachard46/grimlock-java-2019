@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22b74ac6-00f6-4b0f-b356-19f24288ffc0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/LiftArmToState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/MoveArm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/chassis/commands/Shift.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/HoldPosition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Command.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/RobotMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/RobotMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Subsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Subsystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/arm/Arm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/arm/Arm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/arm/ArmConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/arm/ArmState.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/autonomous/PathFollower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/autonomous/PathFollower.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/chassis/Chassis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/chassis/Chassis.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/default/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -115,11 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/LiftArmToState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="39" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="39" />
+            <state relative-caret-position="465">
+              <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#201#202#0" expanded="true" />
@@ -137,11 +127,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/Arm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+            <state relative-caret-position="603">
+              <caret line="146" column="37" selection-start-line="146" selection-start-column="37" selection-end-line="146" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1987#1988#0" expanded="true" />
@@ -156,6 +146,24 @@
                 <element signature="e#4049#4050#0" expanded="true" />
                 <element signature="e#4233#4234#0" expanded="true" />
                 <element signature="e#4288#4289#0" expanded="true" />
+                <element signature="e#4491#4492#0" expanded="true" />
+                <element signature="e#4508#4509#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/HoldPosition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#197#198#0" expanded="true" />
+                <element signature="e#229#230#0" expanded="true" />
+                <element signature="e#290#291#0" expanded="true" />
+                <element signature="e#321#322#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -248,9 +256,10 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/arm/ArmState.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/chassis/commands/Shift.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/chassis/Chassis.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/arm/Arm.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/MoveArm.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/LiftArmToState.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/HoldPosition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/arm/Arm.java" />
       </list>
     </option>
   </component>
@@ -339,7 +348,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1567360410069" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1567360821116" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -395,6 +404,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2532189" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -768,10 +778,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/LiftArmToState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#201#202#0" expanded="true" />
+            <element signature="e#233#234#0" expanded="true" />
+            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#331#332#0" expanded="true" />
+            <element signature="e#294#295#0" expanded="true" />
+            <element signature="e#341#342#0" expanded="true" />
+            <element signature="e#300#301#0" expanded="true" />
+            <element signature="e#341#342#0" expanded="true" />
+            <element signature="e#627#628#0" expanded="true" />
+            <element signature="e#637#638#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/HoldPosition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#197#198#0" expanded="true" />
+            <element signature="e#229#230#0" expanded="true" />
+            <element signature="e#290#291#0" expanded="true" />
+            <element signature="e#321#322#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/Arm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+        <state relative-caret-position="603">
+          <caret line="146" column="37" selection-start-line="146" selection-start-column="37" selection-end-line="146" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1987#1988#0" expanded="true" />
@@ -786,26 +830,8 @@
             <element signature="e#4049#4050#0" expanded="true" />
             <element signature="e#4233#4234#0" expanded="true" />
             <element signature="e#4288#4289#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/arm/commands/LiftArmToState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="39" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#201#202#0" expanded="true" />
-            <element signature="e#233#234#0" expanded="true" />
-            <element signature="e#297#298#0" expanded="true" />
-            <element signature="e#331#332#0" expanded="true" />
-            <element signature="e#294#295#0" expanded="true" />
-            <element signature="e#341#342#0" expanded="true" />
-            <element signature="e#300#301#0" expanded="true" />
-            <element signature="e#341#342#0" expanded="true" />
-            <element signature="e#627#628#0" expanded="true" />
-            <element signature="e#637#638#0" expanded="true" />
+            <element signature="e#4491#4492#0" expanded="true" />
+            <element signature="e#4508#4509#0" expanded="true" />
           </folding>
         </state>
       </provider>
