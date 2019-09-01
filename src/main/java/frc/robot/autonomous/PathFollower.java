@@ -14,8 +14,8 @@ public class PathFollower {
     private EncoderFollower leftEncoderFollower, rightEncoderFollower;
 
     public PathFollower(String pathName) throws IOException {
-        File leftTrajFile = new File(ROBORIO_OUTPUT_DIR + pathName + LEFT_TRAJECTORY_EXTANTION);
-        File rightTrajFile = new File(ROBORIO_OUTPUT_DIR + pathName + RIGHT_TRAJECTORY_EXTANTION);
+        File leftTrajFile = new File(ROBORIO_OUTPUT_DIR + pathName + LEFT_TRAJECTORY_EXTENSION);
+        File rightTrajFile = new File(ROBORIO_OUTPUT_DIR + pathName + RIGHT_TRAJECTORY_EXTENSION);
         Trajectory leftTrajectory = Pathfinder.readFromCSV(leftTrajFile);
         Trajectory rightTrajectory = Pathfinder.readFromCSV(rightTrajFile);
 

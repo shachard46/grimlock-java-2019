@@ -5,39 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.chassis.subsystem;
+package frc.robot.chassis;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Subsystem;
 
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import static frc.robot.Constants.TICKS_PER_REVOLUTION;
 import static frc.robot.Constants.WHEEL_DIAMETER;
+import static frc.robot.RobotMap.*;
 
 /**
  * Add your docs here.
  */
 public class Chassis extends Subsystem {
-    private static final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(0);
-    private static final WPI_TalonSRX leftMotor2 = new WPI_TalonSRX(1);
-    private static final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(2);
-    private static final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(3);
+    private final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
+    private final WPI_TalonSRX leftMotor2 = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
+    private final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
+    private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_2);
 
-    private static final SpeedControllerGroup left = new SpeedControllerGroup(leftMotor1, leftMotor2);
-    private static final SpeedControllerGroup right = new SpeedControllerGroup(rightMotor1, rightMotor2);
+    private final SpeedControllerGroup left = new SpeedControllerGroup(leftMotor1, leftMotor2);
+    private final SpeedControllerGroup right = new SpeedControllerGroup(rightMotor1, rightMotor2);
 
-    private static final DifferentialDrive drive = new DifferentialDrive(left, right);
+    private final DifferentialDrive drive = new DifferentialDrive(left, right);
+
+    private final DoubleSolenoid shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
 
     private static final AHRS navX = new AHRS(I2C.Port.kMXP);
 
     private static final Chassis instance = new Chassis();
 
-    public Chassis() {
+    private Chassis() {
         super();
     }
 
@@ -49,16 +54,32 @@ public class Chassis extends Subsystem {
         return navX;
     }
 
+    /**
+     * @param left
+     * @param right
+     */
+
     public void drive(double left, double right) {
         drive.tankDrive(left, right);
     }
 
+    /**
+     * @return returns the robot current gear
+     */
+    public Gear getGear() {
+        return Gear.getGear(shifterSolenoid.get());
+    }
+
+    public void setGear(Gear gear) {
+        gear.shiftGear(shifterSolenoid);
+    }
+
     public double getLeftVelocity() {
-        return (leftMotor1.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+        return ((double) leftMotor1.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getRightVelocity() {
-        return (rightMotor1.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+        return ((double) rightMotor1.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getAverageVelocity() {
@@ -66,11 +87,11 @@ public class Chassis extends Subsystem {
     }
 
     public double getLeftDistance() {
-        return (leftMotor1.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+        return ((double) leftMotor1.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getRightDistance() {
-        return (rightMotor1.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+        return ((double) rightMotor1.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getAverageDistance() {
@@ -111,13 +132,13 @@ public class Chassis extends Subsystem {
     }
 
     @Override
-    public void setSensorInitialPosition() {
+    public void initializeSensorPosition() {
         leftMotor1.setSelectedSensorPosition(0);
         rightMotor1.setSelectedSensorPosition(0);
     }
 
     @Override
-    public void setInverted() {
+    public void invert() {
         left.setInverted(true);
         left.setInverted(false);
     }
@@ -137,5 +158,35 @@ public class Chassis extends Subsystem {
         rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 
         super.configSensor();
+    }
+
+    public enum Gear {
+        powerGear(Value.kForward),
+        speedGear(Value.kReverse),
+        neutralGear(Value.kOff);
+
+        private Value solenoidValue;
+
+        Gear(Value solenoidValue) {
+            this.solenoidValue = solenoidValue;
+        }
+
+        static Gear getGear(Value solenoidValue) {
+            for (Gear gear : Gear.values()) {
+                if (gear.getSolenoidValue() == solenoidValue) {
+                    return gear;
+                }
+            }
+            throw new IllegalArgumentException("Illegal solenoidValue: " + solenoidValue);
+        }
+
+        void shiftGear(DoubleSolenoid doubleSolenoid) {
+            doubleSolenoid.set(this.solenoidValue);
+        }
+
+        Value getSolenoidValue() {
+            return solenoidValue;
+        }
+
     }
 }

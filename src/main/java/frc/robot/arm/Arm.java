@@ -8,122 +8,89 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystem;
 import frc.robot.utils.Utils;
 
-import static frc.robot.arm.ArmConstants.*;
+import static frc.robot.RobotMap.*;
 
 public class Arm extends Subsystem {
-    private static final TalonSRX armMasterMotor = new TalonSRX(0);
-    private static final VictorSPX armFollowerMotor = new VictorSPX(0);
-    private static ArmState armState = ArmState.ballCollect;
+    private static final int ARM_INITIAL_POSITION = -3840;
+    private static final int TOLERANCE = 70; // was 55
 
-    public static ArmState getArmState() {
+    private static final int ARM_TICKS_PER_REVULATION = 4096;
+    private static final double STARTING_ANGLE = -90;
+
+    private static final double EFFECTIVE_KT = 0.00529850746 * 2 * 360; //in N*m/V  stalltorqueper1A*2motors*gearratio 3.973
+    private static final double INTERNAL_RESISTANCE = 0.0895522388;
+    private static final double ARM_TORQUE_WITHOOUT_ANGLE = 22.71996;
+    private static final double LEVERAGE_TORQUE_WITHOOUT_ANGLE = 12.73537339;
+    private static final double LEVERAGE_LENGTH = 0.135;
+    private static final double DIST_TSIR_TO_SPRING = 0.144;
+
+    private final TalonSRX armMasterMotor = new TalonSRX(ARM_MOTOR_PORT_1);
+    private final VictorSPX armFollowerMotor = new VictorSPX(ARM_MOTOR_PORT_2);
+
+    private ArmState armState = ArmState.ballCollect;
+    private static final Arm instance = new Arm();
+
+    public static Arm getInstance() {
+        return instance;
+    }
+
+    public enum ArmState {
+        ballCollect(-3840),
+        frontDisk(-3000),
+        frontLowBall(-2600),
+        feederDisk(-3516),
+        feederBall(-3245),
+        frontMidBall(-2506),
+        middleBackBall(4856),
+        highBackBall(3490),
+        backDisk(3552);
+
+        private final int angle;
+
+        ArmState(int angle) {
+            this.angle = angle;
+        }
+
+        int getAngle(){
+            return angle;
+        }
+    }
+
+    public ArmState getState() {
         return armState;
     }
 
-    public void setArmState(ArmState armState) {
+    public void setState(ArmState armState) {
         this.armState = armState;
     }
 
-    public void moveArm(double speed) {
+    public void move(double speed) {
         armMasterMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void autoMoveArm(double ticks) {
+    public void autoMove(double ticks) {
         armMasterMotor.set(ControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, calculateFF());
     }
 
-    public boolean isAtTarget(double target) {
+    private boolean isAtTarget(double target) {
         return Utils.isInTolerance(armMasterMotor.getSelectedSensorPosition(), target, TOLERANCE);
     }
 
-    public void armToState() {
-        switch (armState) {
-            case ballCollect:
-                autoMoveArm(BALL_COLLECT_ARM_ANGLE);
-                break;
-            case frontDisk:
-                autoMoveArm(FRONT_DISK_ARM_ANGLE);
-                break;
-            case frontLowBall:
-                autoMoveArm(FRONT_LOW_BALL_ARM_ANGLE);
-                break;
-            case feederDisk:
-                autoMoveArm(FEEDER_DISK_COLLECT);
-                break;
-            case feederBall:
-                autoMoveArm(FEEDER_BALL_COLLECT);
-                break;
-            case frontMidBall:
-                autoMoveArm(FRONT_MIDDLE_BALL_ARM_ANGLE);
-                break;
-            case middleBackBall:
-                autoMoveArm(BACK__MIDDLE_BALL_ARM_ANGLE);
-                break;
-            case highBackBall:
-                autoMoveArm(BACK_HIGH_BALL_ARM_ANGLE);
-                break;
-            case backDisk:
-                autoMoveArm(BACK_DISK_ARM_ANGLE);
-                break;
-        }
+    public void liftToState() {
+        autoMove(armState.getAngle());
     }
 
-    public void isArmAtState() {
-        switch (armState) {
-            case ballCollect:
-                isAtTarget(BALL_COLLECT_ARM_ANGLE);
-                break;
-            case frontDisk:
-                isAtTarget(FRONT_DISK_ARM_ANGLE);
-                break;
-            case frontLowBall:
-                isAtTarget(FRONT_LOW_BALL_ARM_ANGLE);
-                break;
-            case feederDisk:
-                isAtTarget(FEEDER_DISK_COLLECT);
-                break;
-            case feederBall:
-                isAtTarget(FEEDER_BALL_COLLECT);
-                break;
-            case frontMidBall:
-                isAtTarget(FRONT_MIDDLE_BALL_ARM_ANGLE);
-                break;
-            case middleBackBall:
-                isAtTarget(BACK__MIDDLE_BALL_ARM_ANGLE);
-                break;
-            case highBackBall:
-                isAtTarget(BACK_HIGH_BALL_ARM_ANGLE);
-                break;
-            case backDisk:
-                isAtTarget(BACK_DISK_ARM_ANGLE);
-                break;
-        }
+    public boolean isAtState() {
+        return isAtTarget(armState.getAngle());
     }
 
-    public double getStateVal(ArmState armState) {
-        switch (armState) {
-            case ballCollect:
-                return BALL_COLLECT_ARM_ANGLE;
-            case frontDisk:
-                return FRONT_DISK_ARM_ANGLE;
-            case frontLowBall:
-                return FRONT_LOW_BALL_ARM_ANGLE;
-            case frontMidBall:
-                return FRONT_MIDDLE_BALL_ARM_ANGLE;
-            case highBackBall:
-                return BACK_HIGH_BALL_ARM_ANGLE;
-            case middleBackBall:
-                return BACK__MIDDLE_BALL_ARM_ANGLE;
-            case backDisk:
-                return BACK_DISK_ARM_ANGLE;
-            case feederBall:
-                return FEEDER_BALL_COLLECT;
-        }
-        return 0;
+    public double getStateTicks(ArmState armState) {
+        return armState.getAngle();
     }
 
-    public double calculateFF() {
+    private double calculateFF() {
         int current_ticks = armMasterMotor.getSelectedSensorPosition();
-        double angle = (current_ticks / ARM_TICKS_PER_REVULATION) * 360;
+        double angle = ((double) current_ticks / ARM_TICKS_PER_REVULATION) * 360;
         double arm_torque = ARM_TORQUE_WITHOOUT_ANGLE * Utils.cosInDegrees(angle);
 
         double leverage_torque = LEVERAGE_TORQUE_WITHOOUT_ANGLE * Utils.cosInDegrees(angle -
@@ -133,18 +100,18 @@ public class Arm extends Subsystem {
         return 1 * (final_torque * INTERNAL_RESISTANCE / EFFECTIVE_KT) / DriverStation.getInstance().getBatteryVoltage();
     }
 
-    public void zeroArm() {
+    public void reset() {
         armMasterMotor.setSelectedSensorPosition(-3840, 0, 0);
     }
 
     @Override
-    public void restoreFactoryDefault() {
+    protected void restoreFactoryDefault() {
         armMasterMotor.configFactoryDefault();
         armFollowerMotor.configFactoryDefault();
     }
 
     @Override
-    public void setSensorPhase() {
+    protected void setSensorPhase() {
         armMasterMotor.setSensorPhase(true);
     }
 
@@ -154,18 +121,18 @@ public class Arm extends Subsystem {
     }
 
     @Override
-    public void setSensorInitialPosition() {
+    protected void initializeSensorPosition() {
         armMasterMotor.setSelectedSensorPosition(ARM_INITIAL_POSITION);
     }
 
     @Override
-    public void setInverted() {
+    protected void invert() {
         armMasterMotor.setInverted(false);
         armFollowerMotor.setInverted(false);
     }
 
     @Override
-    public void follow() {
+    protected void follow() {
         armFollowerMotor.follow(armMasterMotor);
     }
 

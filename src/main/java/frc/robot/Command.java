@@ -13,6 +13,9 @@ public abstract class Command extends edu.wpi.first.wpilibj.command.Command {
   public Command(Subsystem subsystem) {
     requires(subsystem);
   }
+  public Command(){
+
+  }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

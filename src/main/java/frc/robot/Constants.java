@@ -5,8 +5,8 @@ public class Constants {
     public static final String ROBORIO_HOME_DIR = "/home/lvuser";
     public static final String ROBORIO_DEPLOY_DIR = ROBORIO_HOME_DIR + "/deploy";
     public static final String ROBORIO_OUTPUT_DIR = ROBORIO_DEPLOY_DIR + "/output";
-    public static final String LEFT_TRAJECTORY_EXTANTION = "left.pf1.csv";
-    public static final String RIGHT_TRAJECTORY_EXTANTION = "right.pf1.csv";
+    public static final String LEFT_TRAJECTORY_EXTENSION = "left.pf1.csv";
+    public static final String RIGHT_TRAJECTORY_EXTENSION = "right.pf1.csv";
 
 
     //Encoder to meter parameters
@@ -24,5 +24,4 @@ public class Constants {
     public static final double MAX_ACC = 0;
 
 
-    //Arm
 }
