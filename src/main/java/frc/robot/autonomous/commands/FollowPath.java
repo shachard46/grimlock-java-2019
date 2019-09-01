@@ -1,12 +1,10 @@
-package frc.robot.commands.autonomousCommands;
+package frc.robot.autonomous.commands;
 
 import edu.wpi.first.wpilibj.Notifier;
-import frc.robot.RobotParams;
 import frc.robot.autonomous.PathFollower;
-import frc.robot.commands.Command;
-import frc.robot.subsystems.Chassis;
+import frc.robot.Command;
+import frc.robot.chassis.Chassis;
 
-import java.io.File;
 import java.io.IOException;
 
 public class FollowPath extends Command {

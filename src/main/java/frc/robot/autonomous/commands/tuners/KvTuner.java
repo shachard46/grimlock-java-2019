@@ -1,8 +1,8 @@
-package frc.robot.commands.autonomousCommands.tuners;
+package frc.robot.autonomous.commands.tuners;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.commands.Command;
-import frc.robot.subsystems.Chassis;
+import frc.robot.Command;
+import frc.robot.chassis.Chassis;
 import frc.robot.utils.SimpleCSVLogger;
 
 public class KvTuner extends Command {

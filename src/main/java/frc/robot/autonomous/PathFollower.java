@@ -1,6 +1,6 @@
 package frc.robot.autonomous;
 
-import frc.robot.subsystems.Chassis;
+import frc.robot.chassis.Chassis;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -8,7 +8,7 @@ import jaci.pathfinder.followers.EncoderFollower;
 import java.io.File;
 import java.io.IOException;
 
-import static frc.robot.RobotParams.*;
+import static frc.robot.Constants.*;
 
 public class PathFollower {
     private EncoderFollower leftEncoderFollower, rightEncoderFollower;

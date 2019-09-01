@@ -1,31 +1,7 @@
-package frc.robot;
+package frc.robot.arm;
 
-public class RobotParams {
-    //Trajectory file parameters
-    public static final String ROBORIO_HOME_DIR = "/home/lvuser";
-    public static final String ROBORIO_DEPLOY_DIR = ROBORIO_HOME_DIR + "/deploy";
-    public static final String ROBORIO_OUTPUT_DIR = ROBORIO_DEPLOY_DIR + "/output";
-    public static final String LEFT_TRAJECTORY_EXTANTION = "left.pf1.csv";
-    public static final String RIGHT_TRAJECTORY_EXTANTION = "right.pf1.csv";
-
-
-    //Encoder to meter parameters
-    public static final double WHEEL_DIAMETER = 0;
-    public static final double WHEEL_BASE = 0;
-    public static final int TICKS_PER_REVOLUTION = 4096;
-
-    //PIDVA parameters
-    public static final double KP = 0;
-    public static final double KI = 0;
-    public static final double KD = 0;
-    public static final double KV = 0;
-    public static final double KA = 0;
-    public static final double MAX_VELOCITY = 0;
-    public static final double MAX_ACC = 0;
-
-
-    //Arm
-    public static final int ARM_INITIAL_POSITION = 0;
+public class ArmConstants {
+    public static final int ARM_INITIAL_POSITION = -3840;
     public static final int TOLERANCE = 70; // was 55
 
     public static final int ARM_TICKS_PER_REVULATION = 4096;
@@ -56,4 +32,5 @@ public class RobotParams {
     public static final double FRONT_MIDDLE_DISK_SIDE = 0;
     public static final double BACK_LOW_DISK_SIDE = 0;
     public static final double BACK_MIDDLE_DISK_SIDE = 0;
+
 }

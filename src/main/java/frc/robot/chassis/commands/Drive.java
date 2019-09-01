@@ -1,7 +1,7 @@
-package frc.robot.commands.chassisCommands;
+package frc.robot.chassis.commands;
 
-import frc.robot.commands.Command;
-import frc.robot.subsystems.Chassis;
+import frc.robot.Command;
+import frc.robot.chassis.Chassis;
 
 public class Drive extends Command {
     private double left;

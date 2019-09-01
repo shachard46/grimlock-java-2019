@@ -1,9 +1,7 @@
-package frc.robot;
+package frc.robot.lift;
 
-public class Enums {
-    public static enum LiftState {
+public enum LiftState {
         down,
-
         bottomBall,
         bottomDisk,
         middleDisk,
@@ -13,5 +11,4 @@ public class Enums {
         topDisk,
         middleBallFront,
         up,
-    }
 }

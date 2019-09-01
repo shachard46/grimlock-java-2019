@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.chassis.subsystem;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -14,9 +14,10 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Subsystem;
 
-import static frc.robot.RobotParams.TICKS_PER_REVOLUTION;
-import static frc.robot.RobotParams.WHEEL_DIAMETER;
+import static frc.robot.Constants.TICKS_PER_REVOLUTION;
+import static frc.robot.Constants.WHEEL_DIAMETER;
 
 /**
  * Add your docs here.
