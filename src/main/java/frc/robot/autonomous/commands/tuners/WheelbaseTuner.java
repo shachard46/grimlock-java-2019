@@ -7,11 +7,11 @@ public class WheelbaseTuner extends Command {
     private final int NUM_OF_ROTS = 10;
     private final double ANGLE_TOLERANCE = 5;
     private final double POWER_TO_APPLY = 0.3;
-    double overallDistance;
+    private double overallDistance;
     private double initRightEncoderDist;
     private double initLeftEncoderDist;
     private int rotations;
-    private boolean zeroFlag;
+    private boolean firstRotation;
 
     public WheelbaseTuner() {
         super(Chassis.getInstance());
@@ -20,7 +20,7 @@ public class WheelbaseTuner extends Command {
 
     @Override
     protected void initialize() {
-        zeroFlag = false;
+        firstRotation = true;
         Chassis.getNavX().zeroYaw();
         rotations = 0;
         initLeftEncoderDist = Chassis.getInstance().getLeftDistance();
@@ -34,12 +34,12 @@ public class WheelbaseTuner extends Command {
         overallDistance = (currentLeftEncoderDist + currentRightEncoderDist) / 2;
 
         if (Math.abs(Chassis.getNavX().getYaw()) <= ANGLE_TOLERANCE) {
-            if (!zeroFlag) {
+            if (!firstRotation) {
                 rotations++;
-                zeroFlag = true;
+                firstRotation = true;
             }
         } else {
-            zeroFlag = false;
+            firstRotation = false;
         }
 
 
