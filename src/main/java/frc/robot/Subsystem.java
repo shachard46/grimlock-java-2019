@@ -11,7 +11,7 @@ public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem 
 
     protected abstract void restoreFactoryDefault();
 
-    protected abstract void setSensorPhase();
+    protected  void setSensorPhase(){}
 
     protected void configSensor() {
         initializeSensorPosition();
@@ -20,9 +20,9 @@ public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem 
 
     public abstract void stopMotors();
 
-    protected abstract void initializeSensorPosition();
+    protected void initializeSensorPosition(){}
 
     protected abstract void invert();
 
-    protected abstract void follow();
+    protected void follow(){}
 }
