@@ -15,7 +15,7 @@ public class Lift extends Subsystem {
     private static final Lift instance = new Lift();
     private final TalonSRX liftMasterMotor = new TalonSRX(RobotMap.LIFT_MOTOR_PORT_1);
     private final VictorSPX liftFollowerMotor = new VictorSPX(RobotMap.LIFT_MOTOR_PORT_2);
-    private LiftState liftState = LiftState.down;
+    private LiftState state = LiftState.down;
 
     public static Lift getInstance() {
         return instance;
@@ -29,6 +29,10 @@ public class Lift extends Subsystem {
         liftMasterMotor.set(ControlMode.MotionMagic, ticks);
     }
 
+    public void setState(LiftState state) {
+        this.state = state;
+    }
+
     public void liftToState(LiftState state) {
         autoMove(state.getAngle());
     }
@@ -38,15 +42,15 @@ public class Lift extends Subsystem {
     }
 
     public void liftToState() {
-        autoMove(liftState.getAngle());
+        autoMove(state.getAngle());
     }
 
     public boolean isAtState() {
-        return isAtTarget(liftState.getAngle());
+        return isAtTarget(state.getAngle());
     }
 
-    public double getStateTicks(LiftState liftState) {
-        return liftState.getAngle();
+    public double getStateTicks(LiftState state) {
+        return state.getAngle();
     }
 
     @Override
