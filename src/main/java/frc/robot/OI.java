@@ -7,36 +7,86 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.formations.Formation;
+import frc.robot.gripper.Gripper;
+import frc.robot.gripper.commands.CollectOrEject;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
+    private final Joystick controller = new Joystick(4);
+    //declared buttons
+    private final JoystickButton aButton;
+    private final JoystickButton bButton;
+    private final JoystickButton xButton;
+    private final JoystickButton yButton;
+    private final JoystickButton leftBumper;
+    private final JoystickButton rightBumper;
+    private final JoystickButton startButton;
+    private final JoystickButton backButton;
 
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
+    private final Trigger.GameStateTrigger lowBall;
+    private final Trigger.GameStateTrigger lowDisk;
+    private final Trigger.GameStateTrigger middleFrontBall;
+    private final Trigger.GameStateTrigger middleFrontDisk;
+    private final Trigger.GameStateTrigger middleBackBall;
+    private final Trigger.GameStateTrigger middleBackDisk;
+    private final Trigger.GameStateTrigger highBall;
+    private final Trigger.GameStateTrigger highDisk;
 
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
 
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
+    public OI() {
+        aButton = new JoystickButton(controller, Trigger.GamepadButton.btnA.getNumber());
+        bButton = new JoystickButton(controller, Trigger.GamepadButton.btnB.getNumber());
+        xButton = new JoystickButton(controller, Trigger.GamepadButton.btnX.getNumber());
+        yButton = new JoystickButton(controller, Trigger.GamepadButton.btnY.getNumber());
+        leftBumper = new JoystickButton(controller, Trigger.GamepadButton.leftBumper.getNumber());
+        rightBumper = new JoystickButton(controller, Trigger.GamepadButton.rightBumper.getNumber());
+        startButton = new JoystickButton(controller, Trigger.GamepadButton.start.getNumber());
+        backButton = new JoystickButton(controller, Trigger.GamepadButton.back.getNumber());
 
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
+        lowBall = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnA, Gripper.GripperMode.ballMode);
+        lowDisk = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnA, Gripper.GripperMode.diskMode);
+        middleFrontBall = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnX, Gripper.GripperMode.ballMode);
+        middleFrontDisk = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnX, Gripper.GripperMode.diskMode);
+        middleBackBall = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnB, Gripper.GripperMode.ballMode);
+        middleBackDisk = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnB, Gripper.GripperMode.diskMode);
+        highBall = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnY, Gripper.GripperMode.ballMode);
+        highDisk = new Trigger.GameStateTrigger(controller,
+                Trigger.GamepadButton.btnY, Gripper.GripperMode.diskMode);
+    }
 
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
+    public void activate() {
+        ballButtons();
+        diskButtons();
+    }
+
+    private void ballButtons() {
+        lowBall.whenActive(new Formation.LowBall());
+        middleFrontBall.whenActive(new Formation.FrontMiddleBall());
+        middleBackBall.whenActive(new Formation.BackMiddleBall());
+        highBall.whenActive(new Formation.HighBall());
+
+    }
+
+    private void diskButtons() {
+        lowDisk.whenActive(new Formation.LowDisk());
+        middleFrontDisk.whenActive(new Formation.FrontMiddleDisk());
+        middleBackDisk.whenActive(new Formation.BackMiddleDisk());
+        highDisk.whenActive(new Formation.HighDisk());
+    }
+    private void collectAndEjectButtons(){
+    }
+
 }
