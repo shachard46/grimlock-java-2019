@@ -9,6 +9,11 @@ public class Gripper extends Subsystem {
     private final Victor gripperMotor = new Victor(RobotMap.CLAW_MOTOR_PORT);
     private final DoubleSolenoid gripperModeSolenoid = new DoubleSolenoid(RobotMap.CLAW_SOLENOID_PORT_1, RobotMap.CLAW_SOLENOID_PORT_2);
     private GripperMode mode = GripperMode.diskMode;
+    private static final Gripper instance = new Gripper();
+
+    public static Gripper getInstance() {
+        return instance;
+    }
 
     public GripperMode getMode() {
         return mode;
@@ -19,7 +24,7 @@ public class Gripper extends Subsystem {
         mode.setMode(gripperModeSolenoid);
     }
 
-    public void move(double speed) {
+    public void rotate(double speed) {
         int modeDirection = mode == GripperMode.ballMode ? 1 : -1;
         gripperMotor.set(modeDirection * speed);
     }
