@@ -1,6 +1,6 @@
-package frc.robot;
+package frc.robot.autonomous;
 
-public class Constants {
+public class AutonomousConstants {
     //Trajectory file parameters
     public static final String ROBORIO_HOME_DIR = "/home/lvuser";
     public static final String ROBORIO_DEPLOY_DIR = ROBORIO_HOME_DIR + "/deploy";
@@ -22,6 +22,4 @@ public class Constants {
     public static final double KA = 0;
     public static final double MAX_VELOCITY = 0;
     public static final double MAX_ACC = 0;
-
-
 }

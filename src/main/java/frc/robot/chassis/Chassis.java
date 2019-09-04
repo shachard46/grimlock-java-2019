@@ -18,8 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Subsystem;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import static frc.robot.Constants.TICKS_PER_REVOLUTION;
-import static frc.robot.Constants.WHEEL_DIAMETER;
+import static frc.robot.autonomous.AutonomousConstants.*;
 import static frc.robot.RobotMap.*;
 
 /**

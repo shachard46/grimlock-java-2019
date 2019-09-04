@@ -8,7 +8,7 @@ import jaci.pathfinder.followers.EncoderFollower;
 import java.io.File;
 import java.io.IOException;
 
-import static frc.robot.Constants.*;
+import static frc.robot.autonomous.AutonomousConstants.*;
 
 public class PathFollower {
     private EncoderFollower leftEncoderFollower, rightEncoderFollower;
