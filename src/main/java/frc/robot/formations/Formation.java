@@ -41,6 +41,11 @@ public abstract class Formation extends CommandGroup {
         }
     }
 
+    public static class FeederBallCollect extends Formation {
+        public FeederBallCollect() {
+            super(Lift.LiftState.feederBallCollect, Arm.ArmState.feederBall, Gripper.GripperMode.ballMode);
+        }
+    }
     public static class LowDisk extends Formation {
         public LowDisk() {
             super(Lift.LiftState.bottomDisk, Arm.ArmState.frontDisk, Gripper.GripperMode.ballMode);
@@ -62,6 +67,13 @@ public abstract class Formation extends CommandGroup {
     public static class HighDisk extends Formation {
         public HighDisk() {
             super(Lift.LiftState.topDisk, Arm.ArmState.backDisk, Gripper.GripperMode.ballMode);
+        }
+    }
+
+    public static class FeederDiskCollect extends Formation{
+
+        public FeederDiskCollect() {
+            super(Lift.LiftState.down, Arm.ArmState.feederDisk, Gripper.GripperMode.diskMode);
         }
     }
 }

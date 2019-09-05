@@ -9,9 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.arm.commands.MoveArm;
 import frc.robot.formations.Formation;
 import frc.robot.gripper.Gripper;
 import frc.robot.gripper.commands.CollectOrEject;
+import frc.robot.lift.commands.MoveLift;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,6 +39,11 @@ public class OI {
     private final Trigger.GameStateTrigger middleBackDisk;
     private final Trigger.GameStateTrigger highBall;
     private final Trigger.GameStateTrigger highDisk;
+
+    private final Trigger.GamepadAxisTrigger leftTrigger;
+    private final Trigger.GamepadAxisTrigger rightTrigger;
+    private final Trigger.GamepadAxisTrigger leftJoystickY;
+    private final Trigger.GamepadAxisTrigger rightJoystickY;
 
 
     public OI() {
@@ -65,11 +72,23 @@ public class OI {
                 Trigger.GamepadButton.btnY, Gripper.GripperMode.ballMode);
         highDisk = new Trigger.GameStateTrigger(controller,
                 Trigger.GamepadButton.btnY, Gripper.GripperMode.diskMode);
+
+        leftTrigger = new Trigger.GamepadAxisTrigger(controller, Trigger.GamepadAxis.leftTrigger, 0.1);
+        rightTrigger = new Trigger.GamepadAxisTrigger(controller, Trigger.GamepadAxis.rightTrigger, 0.1);
+        leftJoystickY = new Trigger.GamepadAxisTrigger(controller, Trigger.GamepadAxis.leftY, 0.1);
+        rightJoystickY = new Trigger.GamepadAxisTrigger(controller, Trigger.GamepadAxis.rightY, 0.1);
     }
 
     public void activate() {
         ballButtons();
         diskButtons();
+        collectAndEjectButtons();
+        manualControlButtons();
+    }
+
+    public void manualControlButtons() {
+        leftJoystickY.whileActive(new MoveArm(-controller.getRawAxis(Trigger.GamepadAxis.leftY.getAxis())));
+        rightJoystickY.whileActive(new MoveLift(controller.getRawAxis(Trigger.GamepadAxis.rightY.getAxis())));
     }
 
     private void ballButtons() {
@@ -77,7 +96,7 @@ public class OI {
         middleFrontBall.whenActive(new Formation.FrontMiddleBall());
         middleBackBall.whenActive(new Formation.BackMiddleBall());
         highBall.whenActive(new Formation.HighBall());
-
+        rightBumper.whenActive(new Formation.FeederBallCollect());
     }
 
     private void diskButtons() {
@@ -85,8 +104,13 @@ public class OI {
         middleFrontDisk.whenActive(new Formation.FrontMiddleDisk());
         middleBackDisk.whenActive(new Formation.BackMiddleDisk());
         highDisk.whenActive(new Formation.HighDisk());
+        leftBumper.whenActive(new Formation.FeederDiskCollect());
     }
-    private void collectAndEjectButtons(){
+
+    private void collectAndEjectButtons() {
+        leftTrigger.whileActive(new CollectOrEject(1));
+        rightTrigger.whileActive(new CollectOrEject(-1));
     }
+
 
 }
