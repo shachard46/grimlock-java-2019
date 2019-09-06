@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Robot;
 import frc.robot.Subsystem;
+import frc.robot.chassis.commands.DriveByController;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import static frc.robot.autonomous.AutonomousConstants.*;
@@ -62,6 +64,9 @@ public class Chassis extends Subsystem {
         drive.tankDrive(left, right);
     }
 
+    public void cheesyDrive(double forward, double turn) {
+        drive.curvatureDrive(forward, turn, false);
+      }
     /**
      * @return returns the robot current gear
      */
@@ -107,7 +112,7 @@ public class Chassis extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-
+        (new DriveByController(Robot.oi.getJoystick())).start();
     }
 
     @Override
