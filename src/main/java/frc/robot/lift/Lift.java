@@ -5,16 +5,18 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import frc.robot.RobotMap;
 import frc.robot.Subsystem;
 import frc.robot.utils.Utils;
+
+import static frc.robot.RobotMap.LIFT_MOTOR_PORT_1;
+import static frc.robot.RobotMap.LIFT_MOTOR_PORT_2;
 
 public class Lift extends Subsystem {
 
     private static final int TOLERANCE = 600;
     private static final Lift instance = new Lift();
-    private final TalonSRX liftMasterMotor = new TalonSRX(RobotMap.LIFT_MOTOR_PORT_1);
-    private final VictorSPX liftFollowerMotor = new VictorSPX(RobotMap.LIFT_MOTOR_PORT_2);
+    private final TalonSRX liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
+    private final VictorSPX liftFollowerMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
     private LiftState state = LiftState.down;
 
     public static Lift getInstance() {

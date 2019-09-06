@@ -20,7 +20,7 @@ import frc.robot.lift.commands.MoveLift;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-    private final Joystick controller = new Joystick(4);
+    private final Joystick controller;
     //declared buttons
     private final JoystickButton aButton;
     private final JoystickButton bButton;
@@ -47,6 +47,8 @@ public class OI {
 
 
     public OI() {
+        controller = new Joystick(4);
+
         aButton = new JoystickButton(controller, Trigger.GamepadButton.btnA.getNumber());
         bButton = new JoystickButton(controller, Trigger.GamepadButton.btnB.getNumber());
         xButton = new JoystickButton(controller, Trigger.GamepadButton.btnX.getNumber());

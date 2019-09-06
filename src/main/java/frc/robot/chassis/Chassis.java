@@ -18,28 +18,24 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Subsystem;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import static frc.robot.autonomous.AutonomousConstants.*;
 import static frc.robot.RobotMap.*;
+import static frc.robot.autonomous.AutonomousConstants.TICKS_PER_REVOLUTION;
+import static frc.robot.autonomous.AutonomousConstants.WHEEL_DIAMETER;
 
 /**
  * Add your docs here.
  */
 public class Chassis extends Subsystem {
+    private static final AHRS navX = new AHRS(I2C.Port.kMXP);
+    private static final Chassis instance = new Chassis();
     private final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
     private final WPI_TalonSRX leftMotor2 = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
     private final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
     private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_2);
-
     private final SpeedControllerGroup left = new SpeedControllerGroup(leftMotor1, leftMotor2);
     private final SpeedControllerGroup right = new SpeedControllerGroup(rightMotor1, rightMotor2);
-
     private final DifferentialDrive drive = new DifferentialDrive(left, right);
-
     private final DoubleSolenoid shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
-
-    private static final AHRS navX = new AHRS(I2C.Port.kMXP);
-
-    private static final Chassis instance = new Chassis();
 
     private Chassis() {
         super();
@@ -53,18 +49,11 @@ public class Chassis extends Subsystem {
         return navX;
     }
 
-    /**
-     * @param left
-     * @param right
-     */
 
     public void drive(double left, double right) {
         drive.tankDrive(left, right);
     }
 
-    /**
-     * @return returns the robot current gear
-     */
     public Gear getGear() {
         return Gear.getGear(shifterSolenoid.get());
     }

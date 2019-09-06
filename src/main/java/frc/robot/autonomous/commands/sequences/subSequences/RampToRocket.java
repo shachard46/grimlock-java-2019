@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.autonomous.commands.FollowPath;
 
 public class RampToRocket extends CommandGroup {
-    public RampToRocket(){
+    public RampToRocket() {
         addSequential(new FollowPath("rampToRocket"));
     }
 }

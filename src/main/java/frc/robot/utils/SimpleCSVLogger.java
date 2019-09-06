@@ -56,13 +56,13 @@ import java.util.TimeZone;
 
 public class SimpleCSVLogger {
 
-	long log_write_index;
-	String log_name = null;
+	private long log_write_index;
+	private String log_name = null;
 	String usb_dir = "/U/data_captures/"; // USB drive is mounted to /U on roboRIO
-	String output_dir = "/home/lvuser/logs/";
-	BufferedWriter log_file = null;
-	boolean log_open = false;
-	String logName;
+	private String output_dir = "/home/lvuser/logs/";
+	private BufferedWriter log_file = null;
+	private boolean log_open = false;
+	private String logName;
 
 	public SimpleCSVLogger(String logName) {
 		this.logName = logName;
@@ -85,7 +85,6 @@ public class SimpleCSVLogger {
 			return 0;
 		}
 
-		log_open = false;
 		System.out.println("Initalizing Log file...");
 		try {
 			// new File(output_dir).mkdirs();
@@ -134,7 +133,6 @@ public class SimpleCSVLogger {
 			return 0;
 		}
 
-		log_open = false;
 		System.out.println("Initalizing Log file...");
 		try {
 			// new File(output_dir).mkdirs();
@@ -189,7 +187,7 @@ public class SimpleCSVLogger {
 	public int writeData(double... data_elements) {
 		String line_to_write = "";
 
-		if (log_open == false) {
+		if (!log_open) {
 			System.out.println("Error - Log is not yet opened, cannot write!");
 			return -1;
 		}
@@ -227,7 +225,7 @@ public class SimpleCSVLogger {
 	 * @return Returns 0 on flush success or -1 on failure.
 	 */
 	public int forceSync() {
-		if (log_open == false) {
+		if (!log_open) {
 			System.out.println("Error - Log is not yet opened, cannot sync!");
 			return -1;
 		}
@@ -247,7 +245,7 @@ public class SimpleCSVLogger {
 	public int writeCSVString(String CSVString, boolean createNewLineAtEnd) {
 		String line_to_write = "";
 
-		if (log_open == false) {
+		if (!log_open) {
 			System.out.println("Error - Log is not yet opened, cannot write!");
 			return -1;
 		}
@@ -279,7 +277,7 @@ public class SimpleCSVLogger {
 	public int writeData(String... data_elements) {
 		String line_to_write = "";
 
-		if (log_open == false) {
+		if (!log_open) {
 			System.out.println("Error - Log is not yet opened, cannot write!");
 			return -1;
 		}
@@ -311,7 +309,7 @@ public class SimpleCSVLogger {
 	public int writeData(ArrayList<String> data_elements, boolean createNewLineAtEnd) {
 		String line_to_write = "";
 
-		if (log_open == false) {
+		if (!log_open) {
 			System.out.println("Error - Log is not yet opened, cannot write!");
 			return -1;
 		}
@@ -348,11 +346,11 @@ public class SimpleCSVLogger {
 	 *
 	 * @return -1 on failure to close, 0 on success
 	 */
-	public int close() {
+	public void close() {
 
-		if (log_open == false) {
+		if (!log_open) {
 			System.out.println("Warning - Log is not yet opened, nothing to close.");
-			return 0;
+			return;
 		}
 
 		try {
@@ -362,9 +360,7 @@ public class SimpleCSVLogger {
 		// Catch ALL the errors!!!
 		catch (IOException e) {
 			System.out.println("Error Closing Log File: " + e.getMessage());
-			return -1;
 		}
-		return 0;
 
 	}
 
