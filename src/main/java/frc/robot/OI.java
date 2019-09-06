@@ -20,8 +20,9 @@ import frc.robot.lift.commands.MoveLift;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+    private final Joystick driveController;
     private final Joystick controller;
-    //declared buttons
+    // declared buttons
     private final JoystickButton aButton;
     private final JoystickButton bButton;
     private final JoystickButton xButton;
@@ -45,8 +46,8 @@ public class OI {
     private final Trigger.GamepadAxisTrigger leftJoystickY;
     private final Trigger.GamepadAxisTrigger rightJoystickY;
 
-
     public OI() {
+        driveController = new Joystick(1);
         controller = new Joystick(4);
 
         aButton = new JoystickButton(controller, Trigger.GamepadButton.btnA.getNumber());
@@ -114,5 +115,7 @@ public class OI {
         rightTrigger.whileActive(new CollectOrEject(-1));
     }
 
-
+    public Joystick getJoystick() {
+        return driveController;
+    }
 }
