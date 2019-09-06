@@ -27,9 +27,15 @@ public class Arm extends Subsystem {
     private static final double LEVERAGE_LENGTH = 0.135;
     private static final double DIST_TSIR_TO_SPRING = 0.144;
     private static final Arm instance = new Arm();
-    private final TalonSRX armMasterMotor = new TalonSRX(ARM_MOTOR_PORT_1);
-    private final VictorSPX armFollowerMotor = new VictorSPX(ARM_MOTOR_PORT_2);
+    private final TalonSRX armMasterMotor;
+    private final VictorSPX armSlaveMotor;
     private ArmState armState = ArmState.ballCollect;
+
+    private Arm() {
+        super();
+        armMasterMotor = new TalonSRX(ARM_MOTOR_PORT_1);
+        armSlaveMotor = new VictorSPX(ARM_MOTOR_PORT_2);
+    }
 
     public static Arm getInstance() {
         return instance;
@@ -52,7 +58,7 @@ public class Arm extends Subsystem {
         armMasterMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void autoMove(double ticks) {
+    private void autoMove(double ticks) {
         armMasterMotor.set(ControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, calculateFF());
     }
 
@@ -91,7 +97,7 @@ public class Arm extends Subsystem {
     @Override
     protected void restoreFactoryDefault() {
         armMasterMotor.configFactoryDefault();
-        armFollowerMotor.configFactoryDefault();
+        armSlaveMotor.configFactoryDefault();
     }
 
     @Override
@@ -112,12 +118,12 @@ public class Arm extends Subsystem {
     @Override
     protected void invert() {
         armMasterMotor.setInverted(false);
-        armFollowerMotor.setInverted(false);
+        armSlaveMotor.setInverted(false);
     }
 
     @Override
     protected void follow() {
-        armFollowerMotor.follow(armMasterMotor);
+        armSlaveMotor.follow(armMasterMotor);
     }
 
     @Override

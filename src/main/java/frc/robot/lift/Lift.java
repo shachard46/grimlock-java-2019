@@ -15,9 +15,15 @@ public class Lift extends Subsystem {
 
     private static final int TOLERANCE = 600;
     private static final Lift instance = new Lift();
-    private final TalonSRX liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
-    private final VictorSPX liftFollowerMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
+    private final TalonSRX liftMasterMotor;
+    private final VictorSPX liftSlaveMotor;
     private LiftState state = LiftState.down;
+
+    private Lift() {
+        super();
+        liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
+        liftSlaveMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
+    }
 
     public static Lift getInstance() {
         return instance;
@@ -27,7 +33,7 @@ public class Lift extends Subsystem {
         liftMasterMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void autoMove(int ticks) {
+    private void autoMove(int ticks) {
         liftMasterMotor.set(ControlMode.MotionMagic, ticks);
     }
 
@@ -58,7 +64,7 @@ public class Lift extends Subsystem {
     @Override
     protected void restoreFactoryDefault() {
         liftMasterMotor.configFactoryDefault();
-        liftFollowerMotor.configFactoryDefault();
+        liftSlaveMotor.configFactoryDefault();
     }
 
     @Override
@@ -79,12 +85,12 @@ public class Lift extends Subsystem {
     @Override
     protected void invert() {
         liftMasterMotor.setInverted(true);
-        liftFollowerMotor.setInverted(false);
+        liftSlaveMotor.setInverted(false);
     }
 
     @Override
     protected void follow() {
-        liftFollowerMotor.follow(liftMasterMotor);
+        liftSlaveMotor.follow(liftMasterMotor);
     }
 
     @Override

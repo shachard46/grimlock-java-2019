@@ -28,17 +28,25 @@ import static frc.robot.autonomous.AutonomousConstants.WHEEL_DIAMETER;
 public class Chassis extends Subsystem {
     private static final AHRS navX = new AHRS(I2C.Port.kMXP);
     private static final Chassis instance = new Chassis();
-    private final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
-    private final WPI_TalonSRX leftMotor2 = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
-    private final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
-    private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_2);
-    private final SpeedControllerGroup left = new SpeedControllerGroup(leftMotor1, leftMotor2);
-    private final SpeedControllerGroup right = new SpeedControllerGroup(rightMotor1, rightMotor2);
-    private final DifferentialDrive drive = new DifferentialDrive(left, right);
-    private final DoubleSolenoid shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
+    private final WPI_TalonSRX leftMasterMotor;
+    private final WPI_TalonSRX leftSlaveMotor;
+    private final WPI_TalonSRX rightMasterMotor;
+    private final WPI_TalonSRX rightSlaveMotor;
+    private final SpeedControllerGroup left;
+    private final SpeedControllerGroup right;
+    private final DifferentialDrive drive;
+    private final DoubleSolenoid shifterSolenoid;
 
     private Chassis() {
         super();
+        leftMasterMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
+        leftSlaveMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
+        rightMasterMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
+        rightSlaveMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_2);
+        left = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
+        right = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
+        drive = new DifferentialDrive(left, right);
+        shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
     }
 
     public static Chassis getInstance() {
@@ -62,12 +70,12 @@ public class Chassis extends Subsystem {
         gear.shiftGear(shifterSolenoid);
     }
 
-    public double getLeftVelocity() {
-        return ((double) leftMotor1.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+    private double getLeftVelocity() {
+        return ((double) leftMasterMotor.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
-    public double getRightVelocity() {
-        return ((double) rightMotor1.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+    private double getRightVelocity() {
+        return ((double) rightMasterMotor.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getAverageVelocity() {
@@ -75,11 +83,11 @@ public class Chassis extends Subsystem {
     }
 
     public double getLeftDistance() {
-        return ((double) leftMotor1.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+        return ((double) leftMasterMotor.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getRightDistance() {
-        return ((double) rightMotor1.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
+        return ((double) rightMasterMotor.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getAverageDistance() {
@@ -87,11 +95,11 @@ public class Chassis extends Subsystem {
     }
 
     public int getLeftEncoder() {
-        return leftMotor1.getSelectedSensorPosition();
+        return leftMasterMotor.getSelectedSensorPosition();
     }
 
     public int getRightEncoder() {
-        return rightMotor1.getSelectedSensorPosition();
+        return rightMasterMotor.getSelectedSensorPosition();
     }
 
     @Override
@@ -101,16 +109,16 @@ public class Chassis extends Subsystem {
 
     @Override
     public void restoreFactoryDefault() {
-        leftMotor1.configFactoryDefault();
-        leftMotor2.configFactoryDefault();
-        rightMotor1.configFactoryDefault();
-        rightMotor2.configFactoryDefault();
+        leftMasterMotor.configFactoryDefault();
+        leftSlaveMotor.configFactoryDefault();
+        rightMasterMotor.configFactoryDefault();
+        rightSlaveMotor.configFactoryDefault();
     }
 
     @Override
     public void setSensorPhase() {
-        leftMotor1.setSensorPhase(true);
-        rightMotor1.setSensorPhase(true);
+        leftMasterMotor.setSensorPhase(true);
+        rightMasterMotor.setSensorPhase(true);
     }
 
     @Override
@@ -121,8 +129,8 @@ public class Chassis extends Subsystem {
 
     @Override
     public void initializeSensorPosition() {
-        leftMotor1.setSelectedSensorPosition(0);
-        rightMotor1.setSelectedSensorPosition(0);
+        leftMasterMotor.setSelectedSensorPosition(0);
+        rightMasterMotor.setSelectedSensorPosition(0);
     }
 
     @Override
@@ -133,17 +141,17 @@ public class Chassis extends Subsystem {
 
     @Override
     public void follow() {
-        leftMotor2.follow(leftMotor1);
-        rightMotor2.follow(rightMotor1);
+        leftSlaveMotor.follow(leftMasterMotor);
+        rightSlaveMotor.follow(rightMasterMotor);
     }
 
     @Override
     public void configSensor() {
-        leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-        rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        rightMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-        leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
-        rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+        leftMasterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+        rightMasterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 
         super.configSensor();
     }
