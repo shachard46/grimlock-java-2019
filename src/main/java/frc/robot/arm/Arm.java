@@ -90,8 +90,8 @@ public class Arm extends Subsystem {
 
     @Override
     protected void restoreFactoryDefault() {
-        armMasterMotor.configFactoryDefault();
-        armFollowerMotor.configFactoryDefault();
+        // armMasterMotor.configFactoryDefault();
+        // armFollowerMotor.configFactoryDefault();
     }
 
     @Override
