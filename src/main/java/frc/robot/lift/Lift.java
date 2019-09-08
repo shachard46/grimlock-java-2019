@@ -87,7 +87,7 @@ public class Lift extends Subsystem {
 
     @Override
     protected void invert() {
-        liftMasterMotor.setInverted(true);
+        liftMasterMotor.setInverted(false);
         liftSlaveMotor.setInverted(false);
     }
 

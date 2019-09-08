@@ -6,7 +6,7 @@ public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem 
         restoreFactoryDefault();
         invert();
         follow();
-        configSensor();
+        // configSensor();
     }
     protected abstract void restoreFactoryDefault();
 

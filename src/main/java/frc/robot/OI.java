@@ -90,8 +90,8 @@ public class OI {
     }
 
     public void manualControlButtons() {
-        leftJoystickY.whileActive(new MoveArm(-0.7));
-        rightJoystickY.whileActive(new MoveLift(0.7));
+        leftJoystickY.whileActive(new MoveArm());
+        rightJoystickY.whileActive(new MoveLift());
     }
 
     private void ballButtons() {

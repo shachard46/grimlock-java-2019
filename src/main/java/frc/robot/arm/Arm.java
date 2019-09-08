@@ -121,7 +121,7 @@ public class Arm extends Subsystem {
     @Override
     protected void invert() {
         armMasterMotor.setInverted(false);
-        armSlaveMotor.setInverted(false);
+        armSlaveMotor.setInverted(true);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new HoldPosition());
+        // setDefaultCommand(new HoldPosition());
     }
 
     public enum ArmState {
