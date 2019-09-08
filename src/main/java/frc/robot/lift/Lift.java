@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem;
 import frc.robot.utils.Utils;
 
@@ -14,14 +16,15 @@ import static frc.robot.RobotMap.LIFT_MOTOR_PORT_2;
 public class Lift extends Subsystem {
 
     private static final int TOLERANCE = 600;
-    private final TalonSRX liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
-    private final VictorSPX liftSlaveMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
+    private static final Lift instance = new Lift();
+    private final TalonSRX liftMasterMotor;
+    private final VictorSPX liftSlaveMotor;
     private LiftState state = LiftState.down;
 
-    private static final Lift instance = new Lift();
-
     private Lift() {
-        super();
+        liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
+        liftSlaveMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
+        initialize();
     }
 
     public static Lift getInstance() {
@@ -30,6 +33,7 @@ public class Lift extends Subsystem {
 
     public void move(double speed) {
         liftMasterMotor.set(ControlMode.PercentOutput, speed);
+        SmartDashboard.putNumber("LiftSpeed", speed);
     }
 
     private void autoMove(int ticks) {
@@ -112,8 +116,16 @@ public class Lift extends Subsystem {
     }
 
     public enum LiftState {
-        down(0), bottomBall(0), bottomDisk(0), middleDisk(68131), moveIntake(31573), moveArm(10000),
-        feederBallCollect(63194), topDisk(66756), middleBallFront(9941), up(72105);
+        down(0),
+        bottomBall(0),
+        bottomDisk(0),
+        middleDisk(68131),
+        moveIntake(31573),
+        moveArm(10000),
+        feederBallCollect(63194),
+        topDisk(66756),
+        middleBallFront(9941),
+        up(72105);
 
         private final int angle;
 

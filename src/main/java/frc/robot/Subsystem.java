@@ -2,13 +2,12 @@ package frc.robot;
 
 
 public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem {
-    protected Subsystem() {
+    protected void initialize(){
         restoreFactoryDefault();
         invert();
         follow();
         configSensor();
     }
-
     protected abstract void restoreFactoryDefault();
 
     protected  void setSensorPhase(){}

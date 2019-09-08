@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Subsystem;
 import frc.robot.chassis.commands.DriveByController;
@@ -29,19 +30,26 @@ import static frc.robot.autonomous.AutonomousConstants.WHEEL_DIAMETER;
  */
 public class Chassis extends Subsystem {
     private static final AHRS navX = new AHRS(I2C.Port.kMXP);
-    private final WPI_TalonSRX leftMasterMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
-    private final WPI_TalonSRX leftSlaveMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
-    private final WPI_TalonSRX rightMasterMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
-    private final WPI_TalonSRX rightSlaveMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_2);
-    private final SpeedControllerGroup left = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
-    private final SpeedControllerGroup right = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
-    private final DifferentialDrive drive = new DifferentialDrive(left, right);
-    private final DoubleSolenoid shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
-
     private static final Chassis instance = new Chassis();
+    private final WPI_TalonSRX leftMasterMotor;
+    private final WPI_TalonSRX leftSlaveMotor;
+    private final WPI_TalonSRX rightMasterMotor;
+    private final WPI_TalonSRX rightSlaveMotor;
+    private final SpeedControllerGroup left;
+    private final SpeedControllerGroup right;
+    private final DifferentialDrive drive;
+    private final DoubleSolenoid shifterSolenoid;
 
     private Chassis() {
-        super();
+        leftMasterMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
+        leftSlaveMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
+        rightMasterMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
+        rightSlaveMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_2);
+        left = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
+        right = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
+        drive = new DifferentialDrive(left, right);
+        shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
+        initialize();
     }
 
     public static Chassis getInstance() {
@@ -52,14 +60,14 @@ public class Chassis extends Subsystem {
         return navX;
     }
 
+
     public void drive(double left, double right) {
         drive.tankDrive(left, right);
     }
 
     public void cheesyDrive(double forward, double turn) {
         drive.curvatureDrive(forward, turn, false);
-    }
-
+      }
     /**
      * @return returns the robot current gear
      */
@@ -76,8 +84,7 @@ public class Chassis extends Subsystem {
     }
 
     private double getRightVelocity() {
-        return ((double) rightMasterMotor.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER
-                * Math.PI;
+        return ((double) rightMasterMotor.getSelectedSensorVelocity() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getAverageVelocity() {
@@ -89,8 +96,7 @@ public class Chassis extends Subsystem {
     }
 
     public double getRightDistance() {
-        return ((double) rightMasterMotor.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER
-                * Math.PI;
+        return ((double) rightMasterMotor.getSelectedSensorPosition() / TICKS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
     }
 
     public double getAverageDistance() {
@@ -107,7 +113,7 @@ public class Chassis extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        (new DriveByController(Robot.oi.getJoystick())).start();
+        setDefaultCommand(new DriveByController(Robot.oi.getJoystick()));
     }
 
     @Override
@@ -160,7 +166,9 @@ public class Chassis extends Subsystem {
     }
 
     public enum Gear {
-        powerGear(Value.kForward), speedGear(Value.kReverse), neutralGear(Value.kOff);
+        powerGear(Value.kForward),
+        speedGear(Value.kReverse),
+        neutralGear(Value.kOff);
 
         private Value solenoidValue;
 

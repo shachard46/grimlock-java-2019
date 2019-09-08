@@ -90,8 +90,8 @@ public class OI {
     }
 
     public void manualControlButtons() {
-        leftJoystickY.whileActive(new MoveArm(-controller.getRawAxis(Trigger.GamepadAxis.leftY.getAxis())));
-        rightJoystickY.whileActive(new MoveLift(controller.getRawAxis(Trigger.GamepadAxis.rightY.getAxis())));
+        leftJoystickY.whileActive(new MoveArm(-0.7));
+        rightJoystickY.whileActive(new MoveLift(0.7));
     }
 
     private void ballButtons() {
@@ -117,5 +117,9 @@ public class OI {
 
     public Joystick getJoystick() {
         return driveController;
+    }
+
+    public Joystick getController() {
+        return controller;
     }
 }
