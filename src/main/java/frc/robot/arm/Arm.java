@@ -20,21 +20,20 @@ public class Arm extends Subsystem {
 
     private static final int ARM_TICKS_PER_REVOLUTION = 4096;
 
-    private static final double EFFECTIVE_KT = 0.00529850746 * 2 * 360; //in N*m/V  stalltorqueper1A*2motors*gearratio 3.973
+    private static final double EFFECTIVE_KT = 0.00529850746 * 2 * 360; // in N*m/V stalltorqueper1A*2motors*gearratio
+                                                                        // 3.973
     private static final double INTERNAL_RESISTANCE = 0.0895522388;
     private static final double ARM_TORQUE_WITHOUT_ANGLE = 22.71996;
     private static final double LEVERAGE_TORQUE_WITHOUT_ANGLE = 12.73537339;
     private static final double LEVERAGE_LENGTH = 0.135;
     private static final double DIST_TSIR_TO_SPRING = 0.144;
+    private final TalonSRX armMasterMotor = new TalonSRX(ARM_MOTOR_PORT_1);
+    private final VictorSPX armSlaveMotor = new VictorSPX(ARM_MOTOR_PORT_2);
     private static final Arm instance = new Arm();
-    private final TalonSRX armMasterMotor;
-    private final VictorSPX armSlaveMotor;
     private ArmState armState = ArmState.ballCollect;
 
     private Arm() {
         super();
-        armMasterMotor = new TalonSRX(ARM_MOTOR_PORT_1);
-        armSlaveMotor = new VictorSPX(ARM_MOTOR_PORT_2);
     }
 
     public static Arm getInstance() {
@@ -83,11 +82,12 @@ public class Arm extends Subsystem {
         double angle = ((double) current_ticks / ARM_TICKS_PER_REVOLUTION) * 360;
         double arm_torque = ARM_TORQUE_WITHOUT_ANGLE * Utils.cosInDegrees(angle);
 
-        double leverage_torque = LEVERAGE_TORQUE_WITHOUT_ANGLE * Utils.cosInDegrees(angle -
-                Utils.tanInDegrees(LEVERAGE_LENGTH * Utils.cosInDegrees(angle) / (DIST_TSIR_TO_SPRING -
-                        Utils.sinInDegrees(angle) * LEVERAGE_LENGTH)));
+        double leverage_torque = LEVERAGE_TORQUE_WITHOUT_ANGLE
+                * Utils.cosInDegrees(angle - Utils.tanInDegrees(LEVERAGE_LENGTH * Utils.cosInDegrees(angle)
+                        / (DIST_TSIR_TO_SPRING - Utils.sinInDegrees(angle) * LEVERAGE_LENGTH)));
         double final_torque = arm_torque - leverage_torque;
-        return 1 * (final_torque * INTERNAL_RESISTANCE / EFFECTIVE_KT) / DriverStation.getInstance().getBatteryVoltage();
+        return 1 * (final_torque * INTERNAL_RESISTANCE / EFFECTIVE_KT)
+                / DriverStation.getInstance().getBatteryVoltage();
     }
 
     public void reset() {
@@ -146,15 +146,8 @@ public class Arm extends Subsystem {
     }
 
     public enum ArmState {
-        ballCollect(-3840),
-        frontDisk(-3000),
-        frontLowBall(-2600),
-        feederDisk(-3516),
-        feederBall(-3245),
-        frontMidBall(-2506),
-        middleBackBall(4856),
-        highBackBall(3490),
-        backDisk(3552);
+        ballCollect(-3840), frontDisk(-3000), frontLowBall(-2600), feederDisk(-3516), feederBall(-3245),
+        frontMidBall(-2506), middleBackBall(4856), highBackBall(3490), backDisk(3552);
 
         private final int angle;
 

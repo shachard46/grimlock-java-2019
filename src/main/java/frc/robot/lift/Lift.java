@@ -14,15 +14,14 @@ import static frc.robot.RobotMap.LIFT_MOTOR_PORT_2;
 public class Lift extends Subsystem {
 
     private static final int TOLERANCE = 600;
-    private static final Lift instance = new Lift();
-    private final TalonSRX liftMasterMotor;
-    private final VictorSPX liftSlaveMotor;
+    private final TalonSRX liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
+    private final VictorSPX liftSlaveMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
     private LiftState state = LiftState.down;
+
+    private static final Lift instance = new Lift();
 
     private Lift() {
         super();
-        liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
-        liftSlaveMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
     }
 
     public static Lift getInstance() {
@@ -113,16 +112,8 @@ public class Lift extends Subsystem {
     }
 
     public enum LiftState {
-        down(0),
-        bottomBall(0),
-        bottomDisk(0),
-        middleDisk(68131),
-        moveIntake(31573),
-        moveArm(10000),
-        feederBallCollect(63194),
-        topDisk(66756),
-        middleBallFront(9941),
-        up(72105);
+        down(0), bottomBall(0), bottomDisk(0), middleDisk(68131), moveIntake(31573), moveArm(10000),
+        feederBallCollect(63194), topDisk(66756), middleBallFront(9941), up(72105);
 
         private final int angle;
 

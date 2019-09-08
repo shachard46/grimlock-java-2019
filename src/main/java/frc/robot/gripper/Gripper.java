@@ -6,15 +6,15 @@ import frc.robot.RobotMap;
 import frc.robot.Subsystem;
 
 public class Gripper extends Subsystem {
-    private static final Gripper instance = new Gripper();
-    private final Victor gripperMotor;
-    private final DoubleSolenoid gripperModeSolenoid;
+    private final Victor gripperMotor = new Victor(RobotMap.CLAW_MOTOR_PORT);
+    private final DoubleSolenoid gripperModeSolenoid = new DoubleSolenoid(RobotMap.CLAW_SOLENOID_PORT_1,
+    RobotMap.CLAW_SOLENOID_PORT_2);
     private GripperMode mode = GripperMode.diskMode;
-
+    
+    private static final Gripper instance = new Gripper();
+    
     private Gripper() {
         super();
-        gripperMotor = new Victor(RobotMap.CLAW_MOTOR_PORT);
-        gripperModeSolenoid = new DoubleSolenoid(RobotMap.CLAW_SOLENOID_PORT_1, RobotMap.CLAW_SOLENOID_PORT_2);
     }
 
     public static Gripper getInstance() {
@@ -56,8 +56,7 @@ public class Gripper extends Subsystem {
     }
 
     public enum GripperMode {
-        ballMode(DoubleSolenoid.Value.kForward),
-        diskMode(DoubleSolenoid.Value.kReverse);
+        ballMode(DoubleSolenoid.Value.kForward), diskMode(DoubleSolenoid.Value.kReverse);
 
         private DoubleSolenoid.Value value;
 

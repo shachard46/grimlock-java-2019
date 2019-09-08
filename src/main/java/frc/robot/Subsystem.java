@@ -2,7 +2,7 @@ package frc.robot;
 
 
 public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem {
-    public Subsystem() {
+    protected Subsystem() {
         restoreFactoryDefault();
         invert();
         follow();
