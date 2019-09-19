@@ -89,7 +89,7 @@ public class OI {
         manualControlButtons();
     }
 
-    public void manualControlButtons() {
+    private void manualControlButtons() {
         leftJoystickY.whileActive(new MoveArm(-controller.getRawAxis(Trigger.GamepadAxis.leftY.getAxis())));
         rightJoystickY.whileActive(new MoveLift(controller.getRawAxis(Trigger.GamepadAxis.rightY.getAxis())));
     }

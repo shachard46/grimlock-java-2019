@@ -44,11 +44,11 @@ public class DriveByController extends Command {
     Chassis.getInstance().stopMotors();
   }
 
-  public double getThirdRawAxis(int axis) {
+  private double getThirdRawAxis(int axis) {
     return Math.pow(controller.getRawAxis(axis), 1);
   }
 
-  public double getTriggerRawAxis(int axis) {
+  private double getTriggerRawAxis(int axis) {
     return Math.pow(controller.getRawAxis(axis), 3) + 0.1;
   }
 }
