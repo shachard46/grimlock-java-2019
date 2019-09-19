@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem;
 import frc.robot.arm.commands.HoldPosition;
 import frc.robot.utils.Utils;
@@ -32,9 +33,10 @@ public class Arm extends Subsystem {
     private ArmState armState = ArmState.ballCollect;
 
     private Arm() {
-        super();
+        
         armMasterMotor = new TalonSRX(ARM_MOTOR_PORT_1);
         armSlaveMotor = new VictorSPX(ARM_MOTOR_PORT_2);
+        initialize();
     }
 
     public static Arm getInstance() {
@@ -56,6 +58,7 @@ public class Arm extends Subsystem {
 
     public void move(double speed) {
         armMasterMotor.set(ControlMode.PercentOutput, speed);
+        SmartDashboard.putNumber("ArmSpeed: ", speed);
     }
 
     private void autoMove(double ticks) {
@@ -118,7 +121,7 @@ public class Arm extends Subsystem {
     @Override
     protected void invert() {
         armMasterMotor.setInverted(false);
-        armSlaveMotor.setInverted(false);
+        armSlaveMotor.setInverted(true);
     }
 
     @Override
@@ -142,7 +145,7 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        (new HoldPosition()).start();
+        // setDefaultCommand(new HoldPosition());
     }
 
     public enum ArmState {

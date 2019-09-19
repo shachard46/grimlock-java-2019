@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystem;
 import frc.robot.utils.Utils;
 
@@ -20,9 +22,9 @@ public class Lift extends Subsystem {
     private LiftState state = LiftState.down;
 
     private Lift() {
-        super();
         liftMasterMotor = new TalonSRX(LIFT_MOTOR_PORT_1);
         liftSlaveMotor = new VictorSPX(LIFT_MOTOR_PORT_2);
+        initialize();
     }
 
     public static Lift getInstance() {
@@ -31,6 +33,7 @@ public class Lift extends Subsystem {
 
     public void move(double speed) {
         liftMasterMotor.set(ControlMode.PercentOutput, speed);
+        SmartDashboard.putNumber("LiftSpeed", speed);
     }
 
     private void autoMove(int ticks) {
@@ -84,7 +87,7 @@ public class Lift extends Subsystem {
 
     @Override
     protected void invert() {
-        liftMasterMotor.setInverted(true);
+        liftMasterMotor.setInverted(false);
         liftSlaveMotor.setInverted(false);
     }
 

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Subsystem;
 import frc.robot.chassis.commands.DriveByController;
@@ -40,7 +41,6 @@ public class Chassis extends Subsystem {
     private final DoubleSolenoid shifterSolenoid;
 
     private Chassis() {
-        super();
         leftMasterMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_1);
         leftSlaveMotor = new WPI_TalonSRX(CHASSIS_LEFT_MOTOR_PORT_2);
         rightMasterMotor = new WPI_TalonSRX(CHASSIS_RIGHT_MOTOR_PORT_1);
@@ -49,6 +49,7 @@ public class Chassis extends Subsystem {
         right = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
         drive = new DifferentialDrive(left, right);
         shifterSolenoid = new DoubleSolenoid(CHASSIS_SOL_PORT_1, CHASSIS_SOL_PORT_2);
+        initialize();
     }
 
     public static Chassis getInstance() {
@@ -112,7 +113,7 @@ public class Chassis extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        (new DriveByController(Robot.oi.getJoystick())).start();
+        setDefaultCommand(new DriveByController(Robot.oi.getJoystick()));
     }
 
     @Override

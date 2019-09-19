@@ -12,9 +12,9 @@ public class Gripper extends Subsystem {
     private GripperMode mode = GripperMode.diskMode;
 
     private Gripper() {
-        super();
         gripperMotor = new Victor(RobotMap.CLAW_MOTOR_PORT);
         gripperModeSolenoid = new DoubleSolenoid(RobotMap.CLAW_SOLENOID_PORT_1, RobotMap.CLAW_SOLENOID_PORT_2);
+        initialize();
     }
 
     public static Gripper getInstance() {

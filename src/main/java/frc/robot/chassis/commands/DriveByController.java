@@ -31,12 +31,11 @@ public class DriveByController extends Command {
       }
     } else {
       if (getTriggerRawAxis(3) > 0.1) {
-        Chassis.getInstance().drive(getTriggerRawAxis(3), getTriggerRawAxis(3));
+        Chassis.getInstance().drive(getTriggerRawAxis(3), -getTriggerRawAxis(3));
       } else if (getTriggerRawAxis(4) > 0.1) {
-        Chassis.getInstance().drive(-getTriggerRawAxis(4), -getTriggerRawAxis(4));
+        Chassis.getInstance().drive(-getTriggerRawAxis(4), getTriggerRawAxis(4));
       }
     }
-    System.out.println(controller.getRawAxis(3));
   }
 
   @Override

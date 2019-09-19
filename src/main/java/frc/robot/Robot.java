@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.arm.Arm;
+import frc.robot.chassis.Chassis;
+import frc.robot.lift.Lift;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -116,6 +119,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    SmartDashboard.putData("chassis : ", Chassis.getInstance());
+    SmartDashboard.putData("Arm : ", Arm.getInstance());
+    SmartDashboard.putData("Lift : ", Lift.getInstance());
   }
 
   /**

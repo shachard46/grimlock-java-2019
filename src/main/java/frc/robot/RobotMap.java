@@ -29,7 +29,7 @@ public class RobotMap {
     public static final int LIFT_MS_UP_PORT = 1;   //1;
     public static final int LIFT_MS_DOWN_PORT = 2; //1;
     //ARM
-    public static final int ARM_MOTOR_PORT_1 = 4; //v //TalonSRX 06.02
+    public static final int ARM_MOTOR_PORT_1 = 10; //v //TalonSRX 06.02
     public static final int ARM_MOTOR_PORT_2 = 7; //victorSPX 06.02
     //CLAW
     public static final int JOINT_HORISONTAL_MOTOR_PORT = 9;
